@@ -1,25 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react'
+import { AnimatePresence } from 'framer-motion'
+import IntroScreen from './components/IntroScreen'
+import ChoiceScreen from './components/ChoiceScreen'
+import QuestionScreen from './components/QuestionScreen'
+import RejectionScreen from './components/RejectionScreen'
+import './styles/global.css'
 
 function App() {
+  const [step, setStep] = useState(1)
+  const [choice, setChoice] = useState(null)
+  const [answers, setAnswers] = useState([])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <AnimatePresence>
+      {step === 1 && <IntroScreen setStep={setStep} />}
+      {step === 2 && <ChoiceScreen setStep={setStep} setChoice={setChoice} />}
+      {step === 3 && (
+        <QuestionScreen
+          setStep={setStep}
+          choice={choice}
+          answers={answers}
+          setAnswers={setAnswers}
+        />
+      )}
+      {step === 4 && (
+        <RejectionScreen
+          setStep={setStep}
+          choice={choice}
+          answers={answers}
+          setAnswers={setAnswers} // Ensure this line is present
+        />
+      )}
+    </AnimatePresence>
+  )
 }
 
-export default App;
+export default App
